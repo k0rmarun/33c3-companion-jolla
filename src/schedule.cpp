@@ -9,6 +9,8 @@ Schedule::Schedule(QObject *parent) : QObject(parent)
     mFilename = mDirname+"/cache.json";
     qDebug() << "filename" << mFilename;
     nam = new QNetworkAccessManager(this);
+    mUpdating = false;
+    emit updatingChanged(mUpdating);
     if(!loadFromDisk()){
         loadFromNetwork();
     }
@@ -18,10 +20,15 @@ bool Schedule::loadFromDisk(){
     QFile file(mFilename);
     if(file.open(QIODevice::ReadOnly)){
         mSchedule = QString(file.readAll());
-        emit scheduleChanged(mSchedule);
         file.close();
-        qDebug() << "LOAD FROM DISK SUCCEEDED";
-        return true;
+        if(!mSchedule.isEmpty()){
+            emit scheduleChanged(mSchedule);
+            qDebug() << "LOAD FROM DISK SUCCEEDED";
+            return true;
+        } else {
+            qDebug() << "LOAD FROM DISK FAILED";
+            return false;
+        }
     } else {
         emit loadFromDiskFailed();
         qDebug() << "LOAD FROM DISK FAILED";
@@ -43,7 +50,7 @@ void Schedule::loadFromNetwork(){
 void Schedule::RequestFinished(QNetworkReply *reply){
     if(reply->error() == QNetworkReply::NoError){
         QString tmp = QString(reply->readAll());
-        if(mSchedule != tmp){
+        if(mSchedule != tmp && !tmp.isEmpty()){
             mSchedule = tmp;
             emit scheduleChanged(mSchedule);
             write(mSchedule);
