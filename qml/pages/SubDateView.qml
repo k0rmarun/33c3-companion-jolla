@@ -55,7 +55,6 @@ Page {
         Column {
             id: content
             //width: parent.width
-            height: 2000
             spacing: 2
 
             x: Theme.paddingMedium
@@ -139,6 +138,12 @@ Page {
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
+            }
+
+            Button {
+                text: "Watch live"
+                onClicked: {
+                }
             }
 
             Label {

@@ -37,7 +37,7 @@ bool Schedule::loadFromDisk(){
 }
 
 void Schedule::loadFromNetwork(){
-    QUrl url("https://fahrplan.events.ccc.de/congress/2016/Fahrplan/schedule.json");
+    QUrl url("https://entropia.de/GPN17:Fahrplan:JSON?action=raw");
 
     mUpdating = true;
     emit updatingChanged(mUpdating);

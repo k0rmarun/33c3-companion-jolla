@@ -71,7 +71,7 @@ Page {
             width: page.width
             spacing: Theme.paddingSmall
             PageHeader {
-                title: qsTr("CC3C Companion")
+                title: qsTr("GPN Companion")
             }
 
             Label {

@@ -12,7 +12,7 @@ see yet</source>
 <context>
     <name>MainView</name>
     <message>
-        <source>CC3C Companion</source>
+        <source>GPN Companion</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
