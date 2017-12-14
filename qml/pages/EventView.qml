@@ -35,6 +35,8 @@ import harbour.companion 1.0
 Page {
     id: page
 
+    property var event
+
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
@@ -65,7 +67,7 @@ Page {
 
             PageHeader {
                 id: header
-                title: Memory.get("subdata").title
+                title: page.event.title
             }
 
             Label {
@@ -74,7 +76,7 @@ Page {
             }
 
             Label {
-                text: Memory.get("subdata").title
+                text: page.event.title
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -83,13 +85,15 @@ Page {
             Label {
                 text:"Subtitle:"
                 color: Theme.primaryColor
+                visible: page.event.subtitle ? Theme.fontSizeLarge : 0
             }
 
             Label {
-                text: Memory.get("subdata").subtitle
+                text: page.event.subtitle
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
+                height: page.event.subtitle ? Theme.fontSizeLarge : 0
             }
 
             Label {
@@ -98,7 +102,7 @@ Page {
             }
 
             Label {
-                text: Memory.get("subdata").room
+                text: page.event.room
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -110,7 +114,7 @@ Page {
             }
 
             Label {
-                text: Memory.get("subdata").start+" - "+Memory.get("subdata").end
+                text: page.event.start+" - "+page.event.end
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -122,7 +126,8 @@ Page {
             }
 
             Label {
-                text: Memory.get("subdata").type
+                text: page.event.type
+                font.capitalization: Font.Capitalize
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -134,7 +139,7 @@ Page {
             }
 
             Label {
-                text: (Memory.get("subdata").do_not_record) ? "Do not record" : "-"
+                text: (page.event.do_not_record) ? "Do NOT record!" : "You may record"
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -149,10 +154,11 @@ Page {
             Label {
                 text:"Abstract:"
                 color: Theme.primaryColor
+                visible: page.event.abstract ? true: false
             }
 
             Label {
-                text: Memory.get("subdata").abstract
+                text: page.event.abstract
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -161,10 +167,12 @@ Page {
             Label {
                 text:"Description:"
                 color: Theme.primaryColor
+                visible: page.event.description ? true: false
+
             }
 
             Label {
-                text: Memory.get("subdata").description
+                text: page.event.description
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width

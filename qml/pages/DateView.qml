@@ -31,27 +31,43 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.companion 1.0
+import "../js/Global.js" as Global
 
 Page {
     id: page
+    property var model
+    property string title
+    property bool order: false
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
     SilicaListView {
+
+        PullDownMenu {
+
+            MenuItem {
+                text: page.order ? qsTr("Sort by time") : qsTr("Sort by place")
+                onClicked: {
+                    page.order = !page.order
+                    page.model = Global.orderBy(page.model, page.order);
+                }
+            }
+        }
+
         id: listView
 
         x: Theme.paddingMedium
         width: parent.width - 2*Theme.paddingMedium
 
-        model: Memory.get("model")
+        model: page.model
         anchors.fill: parent
         header: PageHeader {
-            title: Memory.get("title")
+            title: page.title
         }
         delegate: ListItem {
             id: delegate
-            height: title.height + times.height
+            height: title.contentHeight + times.height
 
             Label {
                 id: title
@@ -82,12 +98,15 @@ Page {
             }
 
             onClicked: {
-                Memory.set("subdata",modelData);
-                pageStack.push(Qt.resolvedUrl("SubDateView.qml"));
+                pageStack.push(Qt.resolvedUrl("EventView.qml"), {event:modelData});
             }
 
         }
 
         VerticalScrollDecorator {}
+
+        Component.onCompleted: {
+            page.model = Global.orderBy(Global.groupByTime(page.model), page.order);
+        }
     }
 }

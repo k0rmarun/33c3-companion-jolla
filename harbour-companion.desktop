@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 X-Nemo-Application-Type=silica-qt5
-Icon=companion
-Exec=companion
+Icon=harbour-companion
+Exec=harbour-companion
 Name=companion
 # translation example:
 # your app name in German locale (de)

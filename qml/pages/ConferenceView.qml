@@ -38,24 +38,39 @@ import "../js/Global.js" as Global
 Page {
     id: page
 
+    Loader{
+        id: loader
+    }
+
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
+        leftMargin: Theme.paddingMedium
+        rightMargin: Theme.paddingMedium
         anchors.fill: parent
 
         // Tell SilicaFlickable the height of its content.
         contentHeight: column.height
 
         PullDownMenu {
+
+            MenuItem {
+                text: qsTr("Select conference")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:loader});
+                }
+
+            }
+
             MenuItem {
                 text: "Update schedule"
                 onClicked: {
                     update.execute("Updating schedule",function(){
-                        schedule.loadFromNetwork();
+                        loader.loadFromNetwork();
                     })
-                }
+                }             
             }
         }
 
@@ -71,16 +86,16 @@ Page {
             width: page.width
             spacing: Theme.paddingSmall
             PageHeader {
-                title: qsTr("GPN Companion")
+                title: qsTr("Chaos Companion")
             }
 
             Label {
                 text: "Updating..."
-                visible: schedule.updating
+                visible: loader.loading
             }
 
             ColumnView{
-                model:JSON.parse(schedule.schedule).schedule.conference.days
+                model:JSON.parse(loader.schedule).schedule.conference.days
                 width: parent.width
                 itemHeight: Theme.itemSizeSmall
                 delegate: BackgroundItem {
@@ -91,41 +106,9 @@ Page {
                     }
 
                     onClicked: {
-                        var base = JSON.parse(schedule.schedule).schedule.conference.days[model.index];
+                        var base = JSON.parse(loader.schedule).schedule.conference.days[model.index];
                         var data = base.rooms;
-                        var newData = []
-                        var timed = {}
-                        for(var keys in data){
-                            for(var elem in data[keys]){
-                                var tmp = data[keys][elem]
-                                if(!timed[tmp.start]){
-                                    timed[tmp.start] = []
-                                }
-
-                                timed[tmp.start].push(tmp);
-                            }
-                        }
-                        for(var time in timed){
-                            for(var elem1 in timed[time]){
-                                var tmp1 = timed[time][elem1]
-                                var start = tmp1.start
-
-                                var hours = parseInt(start[0]+start[1])
-                                var dhours = parseInt(tmp1.duration[0]+tmp1.duration[1])
-                                var minute = parseInt(start[3]+start[4])
-                                var dminute = parseInt(tmp1.duration[3]+tmp1.duration[4])
-
-                                var endTime = (hours*60)+minute+(dhours*60)+dminute
-                                var end = Global.padLeft(Math.floor(endTime/60),2)+":"+Global.padLeft(endTime%60,2)
-                                tmp1["end"] = end;
-
-                                newData.push(tmp1)
-                            }
-                        }
-
-                        Memory.set("model", newData)
-                        Memory.set("title", base.date)
-                        pageStack.push(Qt.resolvedUrl("DateView.qml"));
+                        pageStack.push(Qt.resolvedUrl("DateView.qml"), {model:base.rooms, title:base.date});
                     }
                 }
             }

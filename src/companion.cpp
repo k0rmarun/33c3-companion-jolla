@@ -34,18 +34,7 @@
 
 #include <QtQuick>
 #include <sailfishapp.h>
-#include "schedule.h"
-#include "memory.h"
-
-// Second, define the singleton type provider function (callback).
-static QObject *example_qobject_singletontype_provider(QQmlEngine *engine, QJSEngine *scriptEngine)
-{
-    Q_UNUSED(engine)
-    Q_UNUSED(scriptEngine)
-
-    Memory *example = new Memory();
-    return example;
-}
+#include "loader.h"
 
 int main(int argc, char *argv[])
 {
@@ -67,8 +56,7 @@ int main(int argc, char *argv[])
     //
     // For details see:
     // https://harbour.jolla.com/faq#1.5.0
-    qmlRegisterType<Schedule>("harbour.companion", 1, 0, "Schedule");
-    qmlRegisterSingletonType<Memory>("harbour.companion", 1, 0, "Memory", example_qobject_singletontype_provider);
+    qmlRegisterType<Loader>("harbour.companion", 1, 0, "Loader");
 
     // Start the application.
     v->setSource(SailfishApp::pathTo("qml/companion.qml"));

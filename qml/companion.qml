@@ -36,15 +36,11 @@ import "js/Global.js" as Global
 
 ApplicationWindow
 {
-    initialPage: Component { MainView { } }
+    initialPage: Component { ConferenceView { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 
     id: root
     property int date
-
-    Schedule {
-        id: schedule
-    }
 }
 

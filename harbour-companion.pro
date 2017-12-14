@@ -10,22 +10,18 @@
 #   - translation filenames have to be changed
 
 # The name of your application
-TARGET = companion
+TARGET = harbour-companion
 
 QT += qml
 
 CONFIG += sailfishapp
 
 SOURCES += src/companion.cpp \
-    src/schedule.cpp \
-    src/memory.cpp
+    src/loader.cpp
 
 OTHER_FILES += qml/companion.qml \
     qml/cover/CoverPage.qml \
-    rpm/companion.spec \
-    rpm/companion.yaml \
-    translations/*.ts \
-    companion.desktop
+    translations/*.ts
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
@@ -37,18 +33,21 @@ CONFIG += sailfishapp_i18n
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-TRANSLATIONS += translations/companion-de.ts
+TRANSLATIONS += translations/harbour-companion-de.ts
 
 HEADERS += \
-    src/schedule.h \
-    src/memory.h
+    src/loader.h
 
 DISTFILES += \
-    qml/pages/MainView.qml \
-    qml/pages/DateView.qml \
     qml/js/Global.js \
-    qml/pages/SubDateView.qml \
-    rpm/companion.changes
+    qml/pages/DateView.qml \
+    qml/pages/SelectConferenceView.qml \
+    qml/pages/ConferenceView.qml \
+    qml/pages/EventView.qml \
+    rpm/harbour-companion.changes \
+    rpm/harbour-companion.spec \
+    rpm/harbour-companion.yaml \
+    harbour-companion.desktop
 
 desktop.files = $${TARGET}.desktop
 desktop.path = /usr/share/applications
