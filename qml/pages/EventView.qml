@@ -32,6 +32,8 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import harbour.companion 1.0
 
+import "../js/Global.js" as Global
+
 Page {
     id: page
 
@@ -49,9 +51,7 @@ Page {
         contentHeight: content.height
 
         Component.onCompleted: {
-            console.log(height)
-            console.log(data.height)
-            console.log(contentHeight)
+            console.log("----", event)
         }
 
         Column {
@@ -134,16 +134,44 @@ Page {
             }
 
             Label {
+                text:"Presenters:"
+                color: Theme.primaryColor
+            }
+
+            Label {
+                text: Global.presenters2string(page.event.persons)
+                font.capitalization: Font.Capitalize
+                wrapMode: Text.Wrap
+                color: Theme.highlightColor
+                width: parent.width
+            }
+
+            Label {
                 text:"Hints:"
                 color: Theme.primaryColor
             }
 
             Label {
-                text: (page.event.do_not_record) ? "Do NOT record!" : "You may record"
+                text: (page.event.do_not_record) ? "Do NOT record!" : "You may record "+( page.event.recording_licence ? "("+ page.event.recording_licence+")":"")
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
             }
+
+            Label {
+                text:"Language:"
+                color: Theme.primaryColor
+                visible: page.event.language ? true : false
+            }
+
+            Label {
+                text: page.event.language
+                wrapMode: Text.Wrap
+                color: Theme.highlightColor
+                width: parent.width
+                visible: page.event.language ? true : false
+            }
+
 
             Button {
                 text: "Watch live"
@@ -162,7 +190,7 @@ Page {
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
-                font.pixelSize: Theme.fontSizeTiny
+                font.pixelSize: Theme.fontSizeSmall
             }
             Label {
                 text:"Description:"
@@ -176,7 +204,7 @@ Page {
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
-                font.pixelSize: Theme.fontSizeTiny
+                font.pixelSize: Theme.fontSizeSmall
             }
 
             VerticalScrollDecorator {

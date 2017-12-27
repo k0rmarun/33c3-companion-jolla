@@ -84,9 +84,30 @@ function orderBy(objects, byPlace){
             bStart += 30;
         }
 
+        aStart = aStart*60 + parseInt(a.start[3]+a.start[4]);
+        bStart = bStart*60 + parseInt(b.start[3]+b.start[4]);
+
         if(byPlace)
             return comparePlace(aStart, a.room, bStart, b.room);
         return compareTime(aStart, a.room, bStart, b.room);
     });
     return objects;
+}
+
+
+function presenters2string(persons){
+    var ret = "";
+    if(persons.length > 0){
+        for(var p = 0; p < persons.length; p++){
+            ret += persons[p].public_name;
+            if (p != persons.length-1){
+                ret += ", ";
+            }
+        }
+    }
+    else {
+        ret += "Unknown";
+    }
+
+    return ret;
 }

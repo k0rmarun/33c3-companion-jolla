@@ -67,7 +67,8 @@ Page {
         }
         delegate: ListItem {
             id: delegate
-            height: title.contentHeight + times.height
+            height: title.contentHeight + times.contentHeight
+            contentHeight: title.contentHeight + times.contentHeight
 
             Label {
                 id: title
