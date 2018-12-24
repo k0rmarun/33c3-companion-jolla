@@ -35,35 +35,33 @@ import "../js/Global.js" as Global
 
 Page {
     id: page
-    property var model
-    property string title
-    property bool order: false
+    property var day
 
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
     SilicaListView {
 
-        PullDownMenu {
+//        PullDownMenu {
 
-            MenuItem {
-                text: page.order ? qsTr("Sort by time") : qsTr("Sort by place")
-                onClicked: {
-                    page.order = !page.order
-                    page.model = Global.orderBy(page.model, page.order);
-                }
-            }
-        }
+//            MenuItem {
+//                text: page.order ? qsTr("Sort by time") : qsTr("Sort by place")
+//                onClicked: {
+//                    page.order = !page.order
+//                    page.model = Global.orderBy(page.model, page.order);
+//                }
+//            }
+//        }
 
         id: listView
 
         x: Theme.paddingMedium
-        width: parent.width - 2*Theme.paddingMedium
+        width: parent.width - 2 * Theme.paddingMedium
 
-        model: page.model
+        model: page.day.events
         anchors.fill: parent
         header: PageHeader {
-            title: page.title
+            title: Global.formatDate(page.day.date)
         }
         delegate: ListItem {
             id: delegate
@@ -82,7 +80,7 @@ Page {
             Label {
                 id: times
                 x: Theme.paddingMedium
-                text: modelData.start + " - " + modelData.end
+                text: Global.formatTime(modelData.start) + " - " + Global.formatTime(modelData.end)
                 anchors.top: title.bottom
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
@@ -99,15 +97,11 @@ Page {
             }
 
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("EventView.qml"), {event:modelData});
+                pageStack.push(Qt.resolvedUrl("ConferenceEventView.qml"), {event:modelData});
             }
 
         }
 
         VerticalScrollDecorator {}
-
-        Component.onCompleted: {
-            page.model = Global.orderBy(Global.groupByTime(page.model), page.order);
-        }
     }
 }

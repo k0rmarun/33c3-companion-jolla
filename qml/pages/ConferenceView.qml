@@ -59,6 +59,7 @@ Page {
             MenuItem {
                 text: qsTr("Select conference")
                 onClicked: {
+
                     pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:loader});
                 }
 
@@ -67,7 +68,7 @@ Page {
             MenuItem {
                 text: "Update schedule"
                 onClicked: {
-                    update.execute("Updating schedule",function(){
+                    update.execute("Updating schedule", function(){
                         loader.loadFromNetwork();
                     })
                 }             
@@ -86,7 +87,7 @@ Page {
             width: page.width
             spacing: Theme.paddingSmall
             PageHeader {
-                title: qsTr("Chaos Companion")
+                title: loader.conference.title
             }
 
             Label {
@@ -95,20 +96,19 @@ Page {
             }
 
             ColumnView{
-                model:JSON.parse(loader.schedule).schedule.conference.days
+                model:loader.conference.days
                 width: parent.width
                 itemHeight: Theme.itemSizeSmall
                 delegate: BackgroundItem {
                     width: parent.width
                     Label {
-                        text: "Day " + (model.index+1) + ": " + modelData.date
+                        text: "Day " + (model.index+1) + ": " + Global.formatDate(modelData.date)
                         color: Theme.primaryColor
                     }
 
                     onClicked: {
-                        var base = JSON.parse(loader.schedule).schedule.conference.days[model.index];
-                        var data = base.rooms;
-                        pageStack.push(Qt.resolvedUrl("DateView.qml"), {model:base.rooms, title:base.date});
+                        var day = loader.conference.days[model.index];
+                        pageStack.push(Qt.resolvedUrl("ConferenceDayView.qml"), {day:day});
                     }
                 }
             }

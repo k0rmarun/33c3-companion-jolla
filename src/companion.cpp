@@ -35,9 +35,17 @@
 #include <QtQuick>
 #include <sailfishapp.h>
 #include "loader.h"
+#include "event.h"
+#include <unistd.h>
+#include <grp.h>
+#include <pwd.h>
 
 int main(int argc, char *argv[])
 {
+
+    setuid(getpwnam("nemo")->pw_uid);
+    setgid(getgrnam("privileged")->gr_gid);
+
     // SailfishApp::main() will display "qml/template.qml", if you need more
     // control over initialization, you can use:
     //
@@ -57,6 +65,13 @@ int main(int argc, char *argv[])
     // For details see:
     // https://harbour.jolla.com/faq#1.5.0
     qmlRegisterType<Loader>("harbour.companion", 1, 0, "Loader");
+    qmlRegisterType<Conference>("harbour.companion", 1, 0, "Conference");
+    qmlRegisterType<ConferenceDay>("harbour.companion", 1, 0, "ConferenceDay");
+    qmlRegisterType<ConferenceEvent>("harbour.companion", 1, 0, "ConferenceEvent");
+
+    QList<QObject*> eventList = generateEventList();
+    QQmlContext* ctxt = v->rootContext();
+    ctxt->setContextProperty("eventList", QVariant::fromValue(eventList));
 
     // Start the application.
     v->setSource(SailfishApp::pathTo("qml/companion.qml"));

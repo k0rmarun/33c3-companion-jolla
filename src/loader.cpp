@@ -2,14 +2,14 @@
 #include <QFile>
 #include <QDir>
 #include <QStandardPaths>
+#include <QJsonDocument>
 
 Loader::Loader(QObject *parent) : QObject(parent)
 {
     mBaseDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-    mFilename = mBaseDir+"/cache.json";
-    mURLFilename = mBaseDir+"/url";
-    mCacheFilename = mFilename;
-    qDebug() << "filename" << mFilename;
+    mCacheFilename = mBaseDir + "/cache.json";
+    mURLFilename = mBaseDir + "/url";
+    qDebug() << "filename" << mCacheFilename;
 
     nam = new QNetworkAccessManager(this);
     mLoading = false;
@@ -18,20 +18,19 @@ Loader::Loader(QObject *parent) : QObject(parent)
 }
 
 bool Loader::loadFromDisk(){
-    mSchedule = read(mFilename);
-    if(!mSchedule.isEmpty()){
-        emit scheduleChanged(mSchedule);
-        qDebug() << "LOAD FROM DISK SUCCEEDED";
-        return true;
-    } else {
+    QByteArray conferenceData = read(mCacheFilename);
+    if(conferenceData.isEmpty()){
         qDebug() << "LOAD FROM DISK FAILED";
         return false;
     }
+    loadJSON(conferenceData);
+    return true;
 }
 
 void Loader::loadFromNetwork(){
     mLoading = true;
     emit loadingChanged(mLoading);
+    qDebug() << "Loading" << mURL << "from network";
 
     connect(nam, &QNetworkAccessManager::finished,
            this, &Loader::RequestFinished);
@@ -39,7 +38,7 @@ void Loader::loadFromNetwork(){
 }
 
 void Loader::setCurrent(const QString& cacheTitle, const QString &url, int iteration) {
-    mFilename = mBaseDir + "/" + cacheTitle.arg(iteration);
+    mCacheFilename = mBaseDir + "/" + cacheTitle.arg(iteration);
     if(url.isEmpty()){
         mURL = read(mURLFilename);
     }else {
@@ -50,22 +49,35 @@ void Loader::setCurrent(const QString& cacheTitle, const QString &url, int itera
         return;
     }
 }
+void Loader::setCurrent(const QString& cacheTitle, const QString &url) {
+    mCacheFilename = mBaseDir + "/" + cacheTitle;
+    if(url.isEmpty()){
+        mURL = read(mURLFilename);
+    }else {
+        mURL = url;
+    }
+    if(!loadFromDisk()){
+        loadFromNetwork();
+        return;
+    }
+}
 
 void Loader::RequestFinished(QNetworkReply *reply){
     if(reply->error() == QNetworkReply::NoError){
-        QString tmp = QString(reply->readAll());
-        if(mSchedule != tmp && !tmp.isEmpty()){
-            mSchedule = tmp;
-            emit scheduleChanged(mSchedule);
-            write(mFilename, mSchedule);
-            write(mCacheFilename, mSchedule);
-            write(mURLFilename, mURL);
-            qDebug() << "LOAD FROM NETWORK SUCCEEDED";
-        } else {
-            qDebug() << "NOTHING CHANGED";
+        QByteArray conferenceData = reply->readAll();
+        if(conferenceData.isEmpty()){
+            emit loadFromNetworkFailed();
+            qDebug() << "LOAD FROM NETWORK FAILED";
+            return;
         }
+
+        loadJSON(conferenceData);
+        write(mCacheFilename, conferenceData);
+        write(mURLFilename, mURL.toUtf8());
+        qDebug() << "LOAD FROM NETWORK SUCCEEDED";
     } else {
         emit loadFromNetworkFailed();
+        qDebug() << reply;
         qDebug() << "LOAD FROM NETWORK FAILED";
     }
 
@@ -73,26 +85,33 @@ void Loader::RequestFinished(QNetworkReply *reply){
     emit loadingChanged(mLoading);
 }
 
-void Loader::write(const QString& filename, const QString &data){
+void Loader::write(const QString& filename, const QByteArray &data){
     QFile file(filename);
     if(!file.exists()){
         QDir dir = QDir::home();
         dir.mkpath(mBaseDir);
     }
     if(file.open(QIODevice::WriteOnly|QIODevice::Truncate)){
-        file.write(data.toUtf8());
+        file.write(data);
         file.close();
     }
 }
 
-QString Loader::read(const QString& filename){
-    QString ret;
+QByteArray Loader::read(const QString& filename){
+    QByteArray ret;
     QFile file(filename);
     if(file.exists()){
         file.open(QIODevice::ReadOnly);
-        ret = QString(file.readAll());
+        ret = file.readAll();
         file.close();
     }
     return ret;
+}
+
+void Loader::loadJSON(const QByteArray &data)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+    mConference = Conference::fromJson(doc.object());
+    emit conferenceChanged(mConference);
 }
 

@@ -10,27 +10,27 @@ Page {
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
-    ListModel {
-        id: eventModel
-        ListElement {
-            name: qsTr("34. Chaos Communication Congress")
-            cachename: "%0c3"
-            iteration: 2017
-            url: "https://fahrplan.events.ccc.de/congress/%0/Fahrplan/schedule.json"
-        }
-        ListElement {
-            name: qsTr("17. Gulasch Programmier Nacht")
-            cachename: "gpn%0"
-            iteration:17
-            url: "https://entropia.de/GPN%0:Fahrplan:JSON?action=raw"
-        }
-        ListElement {
-            name: qsTr("MRMCD 17")
-            cachename: "mrmcd%0"
-            iteration: 2017
-            url: "https://%0.mrmcd.net/fahrplan/schedule.json"
-        }
-    }
+//    ListModel {
+//        id: eventModel
+//        ListElement {
+//            name: qsTr("34. Chaos Communication Congress")
+//            cachename: "%0c3"
+//            iteration: 2017
+//            url: "https://fahrplan.events.ccc.de/congress/%0/Fahrplan/schedule.json"
+//        }
+//        ListElement {
+//            name: qsTr("17. Gulasch Programmier Nacht")
+//            cachename: "gpn%0"
+//            iteration:17
+//            url: "https://entropia.de/GPN%0:Fahrplan:JSON?action=raw"
+//        }
+//        ListElement {
+//            name: qsTr("MRMCD 17")
+//            cachename: "mrmcd%0"
+//            iteration: 2017
+//            url: "https://%0.mrmcd.net/fahrplan/schedule.json"
+//        }
+//    }
 
     SilicaListView {
         id: listView
@@ -38,7 +38,7 @@ Page {
         x: Theme.paddingMedium
         width: parent.width - 2*Theme.paddingMedium
 
-        model: eventModel
+        model: eventList
         anchors.fill: parent
         header: PageHeader {
             title: qsTr("Choose event")
@@ -57,7 +57,7 @@ Page {
             }
 
             onClicked: {
-                page.loader.setCurrent(model.cachename, model.url, model.iteration);
+                page.loader.setCurrent(model.name, model.url);
                 pageStack.pop();
             }
 

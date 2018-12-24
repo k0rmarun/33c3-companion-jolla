@@ -5,35 +5,39 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+#include "conference.h"
+
 class Loader: public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
-    Q_PROPERTY(QString schedule READ schedule NOTIFY scheduleChanged)
+    Q_PROPERTY(Conference* conference READ conference NOTIFY conferenceChanged)
 
     bool loadFromDisk();
     bool loadURLFromDisk();
-    void write(const QString& filename, const QString& data);
-    QString read(const QString& filename);
+    void write(const QString& filename, const QByteArray &data);
+    QByteArray read(const QString& filename);
+    void loadJSON(const QByteArray &data);
 
     QString mBaseDir;
-    QString mFilename;
     QString mCacheFilename;
     QString mURLFilename;
     QString mURL;
+
     QNetworkAccessManager* nam;
     bool mLoading;
 
-    QString mSchedule;
+    Conference* mConference;
 
 public:
     explicit Loader(QObject *parent = 0);
-    QString schedule() { return mSchedule; }
+    Conference* conference() { return mConference; }
     bool loading(){return mLoading; }
 
     Q_INVOKABLE void loadFromNetwork();
     Q_INVOKABLE void setCurrent(const QString& cacheTitle, const QString &url, int iteration);
+    Q_INVOKABLE void setCurrent(const QString& cacheTitle, const QString &url);
 
 private slots:
     void RequestFinished(QNetworkReply* reply);
@@ -41,7 +45,7 @@ private slots:
 signals:
     void loadFromDiskFailed();
     void loadFromNetworkFailed();
-    void scheduleChanged(const QString& source);
+    void conferenceChanged(Conference* conference);
     void loadingChanged(bool updating);
 };
 

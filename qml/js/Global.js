@@ -111,3 +111,14 @@ function presenters2string(persons){
 
     return ret;
 }
+
+function formatTime(date){
+    return date.toLocaleString(Qt.locale("de_DE"), "HH:mm");
+}
+
+function formatDate(date){
+    return date.toLocaleString(Qt.locale("de_DE"), "ddd dd. MMMM. yyyy");
+}
+function formatDateTime(date){
+    return formatDate(date) + " " + formatTime(date);
+}

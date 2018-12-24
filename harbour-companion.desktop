@@ -2,7 +2,7 @@
 Type=Application
 X-Nemo-Application-Type=silica-qt5
 Icon=harbour-companion
-Exec=harbour-companion
+Exec=invoker --type=silica-qt5 -n -d 5 -s /usr/bin/harbour-companion
 Name=companion
 # translation example:
 # your app name in German locale (de)

@@ -15,9 +15,17 @@ TARGET = harbour-companion
 QT += qml
 
 CONFIG += sailfishapp
+CONFIG += link_pkgconfig
+
+PKGCONFIG += libmkcal-qt5 libkcalcoren-qt5 sailfishapp
+INCLUDEPATH += /usr/include/sailfishapp /usr/include/mkcal-qt5 /usr/include/kcalcoren-qt5
 
 SOURCES += src/companion.cpp \
-    src/loader.cpp
+    src/loader.cpp \
+    src/event.cpp \
+    src/conference.cpp \
+    src/conferenceday.cpp \
+    src/conferenceevent.cpp
 
 OTHER_FILES += qml/companion.qml \
     qml/cover/CoverPage.qml \
@@ -36,18 +44,22 @@ CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-companion-de.ts
 
 HEADERS += \
-    src/loader.h
+    src/loader.h \
+    src/event.h \
+    src/conference.h \
+    src/conferenceday.h \
+    src/conferenceevent.h
 
 DISTFILES += \
-    qml/js/Global.js \
-    qml/pages/DateView.qml \
-    qml/pages/SelectConferenceView.qml \
-    qml/pages/ConferenceView.qml \
-    qml/pages/EventView.qml \
     rpm/harbour-companion.changes \
     rpm/harbour-companion.spec \
     rpm/harbour-companion.yaml \
-    harbour-companion.desktop
+    harbour-companion.desktop \
+    qml/js/Global.js \
+    qml/pages/SelectConferenceView.qml \
+    qml/pages/ConferenceView.qml \
+    qml/pages/ConferenceDayView.qml \
+    qml/pages/ConferenceEventView.qml
 
 desktop.files = $${TARGET}.desktop
 desktop.path = /usr/share/applications

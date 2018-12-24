@@ -43,16 +43,20 @@ Page {
     allowedOrientations: Orientation.All
 
     SilicaFlickable {
+
+        PullDownMenu {
+            MenuItem {
+                text: qsTr("Save to calendar")
+                onClicked: {
+                    page.event.addToCalendar()
+                }
+            }
+        }
+
         id: flickable
         width: parent.width
         anchors.fill: parent
-
-
         contentHeight: content.height
-
-        Component.onCompleted: {
-            console.log("----", event)
-        }
 
         Column {
             id: content
@@ -114,7 +118,7 @@ Page {
             }
 
             Label {
-                text: page.event.start+" - "+page.event.end
+                text: "From: " + Global.formatDateTime(page.event.start) + "\nTo:       " + Global.formatDateTime(page.event.end)
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
@@ -139,7 +143,7 @@ Page {
             }
 
             Label {
-                text: Global.presenters2string(page.event.persons)
+                text: page.event.persons.join(", ")
                 font.capitalization: Font.Capitalize
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
@@ -174,8 +178,9 @@ Page {
 
 
             Button {
-                text: "Watch live"
+                text: "Save to calendar"
                 onClicked: {
+                    page.event.addToCalendar()
                 }
             }
 
