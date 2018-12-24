@@ -139,20 +139,16 @@ ConferenceEvent* ConferenceEvent::fromJson(const QJsonObject &json)
 
 void ConferenceEvent::addToCalendar() const
 {
-    qDebug() << "aaa";
     mKCal::ExtendedCalendar::Ptr calendar = mKCal::ExtendedCalendar::Ptr ( new mKCal::ExtendedCalendar( QLatin1String( "UTC" ) ) );
-    qDebug() << "bbb";
     mKCal::ExtendedStorage::Ptr storage = mKCal::ExtendedCalendar::defaultStorage( calendar );
-    qDebug() << "ccc";
     if (storage->open()) {
-        qDebug() << "ddd";
         mKCal::Notebook::Ptr notebook = storage->defaultNotebook();
-        qDebug() << "eee";
         if (notebook) {
-            qDebug() << "fff";
             KCalCore::Event::Ptr event = KCalCore::Event::Ptr( new KCalCore::Event() );
             event->setSummary(title);
-            QTextStream desc;
+
+            QString descString;
+            QTextStream desc(&descString);
             desc << subtitle << endl;
             desc << "Room: " << room << endl;
             desc << "Track: " << track << endl;
@@ -161,15 +157,12 @@ void ConferenceEvent::addToCalendar() const
             desc << endl << abstract << endl;
             desc << endl << description << endl;
 
-            QString* desc_str = desc.string();
-            event->setDescription(*desc_str);
+            event->setDescription(descString);
             event->setDtStart( KDateTime(start) );
             event->setDtEnd( KDateTime(end) );
-            qDebug() << "ggg";
             calendar->addEvent( event, notebook->uid() );
-            qDebug() << "hhh";
             storage->save();
-            qDebug() << "SAVED EVENT" << *desc_str;
+            qDebug() << "SAVED EVENT" << descString;
         } else {
             qDebug() << "FAILED TO SAVE event" << title;
         }

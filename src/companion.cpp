@@ -42,7 +42,7 @@
 
 int main(int argc, char *argv[])
 {
-
+    // Get elevated rights to access calendar
     setuid(getpwnam("nemo")->pw_uid);
     setgid(getgrnam("privileged")->gr_gid);
 
