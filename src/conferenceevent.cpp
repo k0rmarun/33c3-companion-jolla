@@ -119,17 +119,17 @@ ConferenceEvent* ConferenceEvent::fromJson(const QJsonObject &json)
         json["start"].toString(""),
         json["duration"].toString("")
     );
-    event->setRoom(json["room"].toString("Unknown"));
-    event->setTitle(json["title"].toString("Unknown"));
-    event->setSubTitle(json["title"].toString("Unknown"));
-    event->setTrack(json["track"].toString("Unknown"));
-    event->setType(json["type"].toString("Unknown"));
-    event->setLanguage(json["language"].toString("Unknown"));
-    event->setAbstract(json["abstract"].toString("Unknown"));
-    event->setDescription(json["description"].toString("Unknown"));
+    event->setRoom(json["room"].toString(""));
+    event->setTitle(json["title"].toString(""));
+    event->setSubTitle(json["subtitle"].toString(""));
+    event->setTrack(json["track"].toString(""));
+    event->setType(json["type"].toString(""));
+    event->setLanguage(json["language"].toString(""));
+    event->setAbstract(json["abstract"].toString(""));
+    event->setDescription(json["description"].toString(""));
     event->setRecord(!json["record"].toBool(false));
     for(const auto& person: json["persons"].toArray()){
-        event->addPerson(person.toObject()["public_name"].toString("Unknown"));
+        event->addPerson(person.toObject()["public_name"].toString(""));
     }
     for(const auto& link: json["links"].toArray()){
         event->addLink(link.toString("Unknown"));

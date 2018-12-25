@@ -104,6 +104,7 @@ Page {
                     Label {
                         text: "Day " + (model.index+1) + ": " + Global.formatDate(modelData.date)
                         color: Theme.primaryColor
+                        font.pixelSize: Theme.fontSizeLarge
                     }
 
                     onClicked: {

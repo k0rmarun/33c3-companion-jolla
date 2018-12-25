@@ -89,7 +89,7 @@ Page {
             Label {
                 text:"Subtitle:"
                 color: Theme.primaryColor
-                visible: page.event.subtitle ? Theme.fontSizeLarge : 0
+                visible: page.event.subtitle ? true : false
             }
 
             Label {
@@ -97,7 +97,8 @@ Page {
                 wrapMode: Text.Wrap
                 color: Theme.highlightColor
                 width: parent.width
-                height: page.event.subtitle ? Theme.fontSizeLarge : 0
+                visible: page.event.subtitle ? true : false
+                //height: page.event.subtitle ? Theme.fontSizeLarge : 0
             }
 
             Label {
@@ -117,12 +118,74 @@ Page {
                 color: Theme.primaryColor
             }
 
-            Label {
-                text: "From: " + Global.formatDateTime(page.event.start) + "\nTo:       " + Global.formatDateTime(page.event.end)
-                wrapMode: Text.Wrap
-                color: Theme.highlightColor
+//            Item {
+//                width: parent.width
+//                anchors.left: parent.width
+//                Label {
+//                    id: fromLabel
+//                    width: 50
+//                    height: Theme.itemSizeSmall
+//                    text: "From:"
+//                }
+//                Label {
+//                    id: fromValue
+//                    width: 50
+//                    text: Global.formatDateTime(page.event.start)
+//                    height: Theme.itemSizeSmall
+//                    anchors.left: fromLabel.right
+//                }
+//                Label {
+//                    id: toLabel
+//                    width: 50
+//                    height: Theme.itemSizeSmall
+//                    anchors.left: fromLabel.left
+//                    anchors.top: fromLabel.bottom
+//                    text: "From:"
+//                }
+//                Label {
+//                    id: toValue
+//                    width: 50
+//                    text: Global.formatDateTime(page.event.end)
+//                    height: Theme.itemSizeSmall
+//                    anchors.left: fromLabel.right
+//                    anchors.top: fromLabel.bottom
+//                }
+//            }
+
+            SilicaListView {
                 width: parent.width
+                height: Theme.itemSizeExtraSmall
+                model: ListModel {
+                    ListElement { key: "From:"; value: "start"}
+                    ListElement { key: "To:"; value: "end"}
+                }
+                delegate: ListItem {
+                    width: parent.width
+                    contentHeight: Theme.itemSizeExtraSmall/2
+                    Label {
+                        id: gridFrom
+                        text: model.key
+                        width: Theme.itemSizeMedium
+                        color: Theme.primaryColor
+                        height: Theme.itemSizeExtraSmall
+                    }
+                    Label {
+                        text: Global.formatDateTime(page.event[model.value])
+                        anchors.left: gridFrom.right
+                        width: parent.width - gridFrom.width
+                        color: Theme.highlightColor
+                        height: Theme.itemSizeExtraSmall
+                    }
+                }
+
             }
+
+//            Label {
+//                text: "From: " + Global.formatDateTime(page.event.start) + "\nTo:       " + Global.formatDateTime(page.event.end)
+//                wrapMode: Text.Wrap
+//                color: Theme.highlightColor
+//                width: parent.width
+//            }
 
             Label {
                 text:"Type:"
