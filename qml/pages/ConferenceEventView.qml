@@ -188,6 +188,18 @@ Page {
 //            }
 
             Label {
+                text:"Track:"
+                color: Theme.primaryColor
+            }
+
+            Label {
+                text: page.event.track
+                font.capitalization: Font.Capitalize
+                wrapMode: Text.Wrap
+                color: Theme.highlightColor
+                width: parent.width
+            }
+            Label {
                 text:"Type:"
                 color: Theme.primaryColor
             }

@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>ConferenceDayView</name>
+    <message>
+        <source>Sort by time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sort by track</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ConferenceEventView</name>
     <message>
         <source>Save to calendar</source>

@@ -28,6 +28,10 @@ class ConferenceEvent : public QObject
     QString room, title, subtitle, track, type, language, abstract, description;
     bool record;
     QStringList persons, links;
+    bool _compareByTime(const ConferenceEvent& b) const;
+    bool _compareByTitle(const ConferenceEvent& b) const;
+    bool _compareByTrack(const ConferenceEvent& b) const;
+    bool _compareByRoom(const ConferenceEvent& b) const;
 
 public:
     explicit ConferenceEvent(QObject *parent = nullptr);
@@ -43,7 +47,10 @@ public:
     void setRecord(bool record);
     void addPerson(const QString& person);
     void addLink(const QString& link);
-    bool operator <(const ConferenceEvent& b) const;
+    bool compareByTime(const ConferenceEvent& b) const;
+    bool compareByTitle(const ConferenceEvent& b) const;
+    bool compareByTrack(const ConferenceEvent& b) const;
+    bool compareByRoom(const ConferenceEvent& b) const;
 
     static ConferenceEvent* fromJson(const QJsonObject& json);
 
@@ -62,10 +69,6 @@ signals:
     void recordChanged(bool record);
     void personsChanged(const QStringList& persons);
     void linksChanged(const QStringList& links);
-};
-
-struct ConferenceEventPointerCompare {
-  bool operator()(const QObject* a, const QObject* b);
 };
 
 

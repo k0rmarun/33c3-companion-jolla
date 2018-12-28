@@ -36,6 +36,7 @@
 #include <sailfishapp.h>
 #include "loader.h"
 #include "event.h"
+#include "conferenceeventsortingorder.h"
 #include <unistd.h>
 #include <grp.h>
 #include <pwd.h>
@@ -68,6 +69,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Conference>("harbour.companion", 1, 0, "Conference");
     qmlRegisterType<ConferenceDay>("harbour.companion", 1, 0, "ConferenceDay");
     qmlRegisterType<ConferenceEvent>("harbour.companion", 1, 0, "ConferenceEvent");
+    qmlRegisterType<ConferenceEventSortingOrder>("harbour.companion", 1, 0, "SortingOrder");
 
     QList<QObject*> eventList = generateEventList();
     QQmlContext* ctxt = v->rootContext();

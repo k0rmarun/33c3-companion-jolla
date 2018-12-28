@@ -25,7 +25,8 @@ SOURCES += src/companion.cpp \
     src/event.cpp \
     src/conference.cpp \
     src/conferenceday.cpp \
-    src/conferenceevent.cpp
+    src/conferenceevent.cpp \
+    src/conferenceeventcompare.cpp
 
 OTHER_FILES += qml/companion.qml \
     qml/cover/CoverPage.qml \
@@ -48,7 +49,9 @@ HEADERS += \
     src/event.h \
     src/conference.h \
     src/conferenceday.h \
-    src/conferenceevent.h
+    src/conferenceevent.h \
+    src/conferenceeventsortingorder.h \
+    src/conferenceeventcompare.h
 
 DISTFILES += \
     rpm/harbour-companion.changes \

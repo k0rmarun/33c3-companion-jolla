@@ -17,6 +17,29 @@ struct CalendarInfo
         : name(name), notebookUID(notebookUID) {}
 };
 
+bool ConferenceEvent::_compareByTime(const ConferenceEvent &b) const
+{
+    if(start == b.start){
+        return end < b.end;
+    }
+    return start < b.start;
+}
+
+bool ConferenceEvent::_compareByTitle(const ConferenceEvent &b) const
+{
+    return title < b.title;
+}
+
+bool ConferenceEvent::_compareByTrack(const ConferenceEvent &b) const
+{
+    return track < b.track;
+}
+
+bool ConferenceEvent::_compareByRoom(const ConferenceEvent &b) const
+{
+    return room < b.room;
+}
+
 ConferenceEvent::ConferenceEvent(QObject *parent) : QObject(parent)
 {
 
@@ -100,16 +123,40 @@ void ConferenceEvent::addLink(const QString &link)
     emit linksChanged(this->links);
 }
 
-bool ConferenceEvent::operator <(const ConferenceEvent& b) const
+bool ConferenceEvent::compareByTime(const ConferenceEvent& b) const
 {
     if(start == b.start){
         if(end == b.end){
-            return room < b.room;
+            return _compareByRoom(b);
         }
         return end < b.end;
     }
     return start < b.start;
 }
+
+bool ConferenceEvent::compareByTitle(const ConferenceEvent& b) const
+{
+    if(title == b.title){
+        return _compareByTime(b);
+    }
+    return title < b.title;
+}
+
+bool ConferenceEvent::compareByTrack(const ConferenceEvent& b) const
+{
+    if(track == b.track){
+        return _compareByTime(b);
+    }
+    return track < b.track;
+}
+bool ConferenceEvent::compareByRoom(const ConferenceEvent& b) const
+{
+    if(room == b.room){
+        return _compareByTime(b);
+    }
+    return room < b.room;
+}
+
 
 ConferenceEvent* ConferenceEvent::fromJson(const QJsonObject &json)
 {
@@ -169,13 +216,4 @@ void ConferenceEvent::addToCalendar() const
     } else {
         qDebug() << "FAILED TO ACCESS CALENDER" << calendar << storage;
     }
-}
-
-bool ConferenceEventPointerCompare::operator()(const QObject *a, const QObject *b) {
-    const ConferenceEvent* aa = dynamic_cast<const ConferenceEvent*>(a);
-    const ConferenceEvent* bb = dynamic_cast<const ConferenceEvent*>(b);
-
-    if(aa == nullptr || bb == nullptr)
-        return false;
-    return *aa < *bb;
 }

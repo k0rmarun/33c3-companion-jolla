@@ -42,16 +42,27 @@ Page {
 
     SilicaListView {
 
-//        PullDownMenu {
+        PullDownMenu {
 
-//            MenuItem {
-//                text: page.order ? qsTr("Sort by time") : qsTr("Sort by place")
-//                onClicked: {
-//                    page.order = !page.order
-//                    page.model = Global.orderBy(page.model, page.order);
-//                }
-//            }
-//        }
+            MenuItem {
+                text: qsTr("Sort by time")
+                onClicked: {
+                    page.day.sortingOrder = SortingOrder.BY_TIME;
+                }
+            }
+            MenuItem {
+                text: qsTr("Sort by room")
+                onClicked: {
+                    page.day.sortingOrder = SortingOrder.BY_ROOM;
+                }
+            }
+            MenuItem {
+                text: qsTr("Sort by track")
+                onClicked: {
+                    page.day.sortingOrder = SortingOrder.BY_TRACK;
+                }
+            }
+        }
 
         id: listView
 

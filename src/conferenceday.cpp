@@ -1,4 +1,5 @@
 #include "conferenceday.h"
+#include "conferenceeventcompare.h"
 
 ConferenceDay::ConferenceDay(QObject *parent) : QObject(parent)
 {
@@ -23,6 +24,17 @@ void ConferenceDay::addRoom(const QString &room)
     emit roomsChanged(this->rooms);
 }
 
+ConferenceEventSortingOrder::SortingOrder ConferenceDay::getSortingOrder() const
+{
+    return sortingOrder;
+}
+
+void ConferenceDay::setSortingOrder(const ConferenceEventSortingOrder::SortingOrder &sortingOrder)
+{
+    this->sortingOrder = sortingOrder;
+    sort();
+}
+
 ConferenceDay *ConferenceDay::fromJson(const QJsonObject &json)
 {
     ConferenceDay* day = new ConferenceDay;
@@ -35,6 +47,15 @@ ConferenceDay *ConferenceDay::fromJson(const QJsonObject &json)
             day->addEvent(ConferenceEvent::fromJson(event.toObject()));
         }
     }
-    std::sort(day->events.begin(), day->events.end(), ConferenceEventPointerCompare());
+    day->setSortingOrder(ConferenceEventSortingOrder::BY_TIME);
+    day->sort();
     return day;
+}
+
+void ConferenceDay::sort()
+{
+    ConferenceEventPointerCompare comparator;
+    comparator.sortingOrder = sortingOrder;
+    std::sort(events.begin(), events.end(), comparator);
+    emit eventsChanged(events);
 }
