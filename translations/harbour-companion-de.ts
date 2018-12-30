@@ -31,14 +31,6 @@
     </message>
 </context>
 <context>
-    <name>CoverPage</name>
-    <message>
-        <source>Nothing to
-see yet</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SelectConferenceView</name>
     <message>
         <source>Choose event</source>

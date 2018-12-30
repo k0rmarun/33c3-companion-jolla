@@ -24,16 +24,17 @@ class ConferenceEvent : public QObject
     Q_PROPERTY(QStringList persons MEMBER persons NOTIFY personsChanged)
     Q_PROPERTY(QStringList links MEMBER links NOTIFY linksChanged)
 
-    QDateTime start, end;
-    QString room, title, subtitle, track, type, language, abstract, description;
-    bool record;
-    QStringList persons, links;
     bool _compareByTime(const ConferenceEvent& b) const;
     bool _compareByTitle(const ConferenceEvent& b) const;
     bool _compareByTrack(const ConferenceEvent& b) const;
     bool _compareByRoom(const ConferenceEvent& b) const;
 
 public:
+    QDateTime start, end;
+    QString room, title, subtitle, track, type, language, abstract, description;
+    bool record;
+    QStringList persons, links;
+
     explicit ConferenceEvent(QObject *parent = nullptr);
     void setStartEnd(const QString& date, const QString& start, const QString& duration);
     void setRoom(const QString& room);

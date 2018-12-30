@@ -37,11 +37,7 @@ import "../js/Global.js" as Global
 
 Page {
     id: page
-
-    Loader{
-        id: loader
-    }
-
+    property var loader
     // The effective value will be restricted by ApplicationWindow.allowedOrientations
     allowedOrientations: Orientation.All
 
@@ -59,8 +55,7 @@ Page {
             MenuItem {
                 text: qsTr("Select conference")
                 onClicked: {
-
-                    pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:loader});
+                    pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:Loader});
                 }
 
             }
@@ -96,7 +91,7 @@ Page {
             }
 
             ColumnView{
-                model:loader.conference.days
+                model: loader.conference.days
                 width: parent.width
                 itemHeight: Theme.itemSizeSmall
                 delegate: BackgroundItem {
@@ -114,6 +109,10 @@ Page {
                 }
             }
         }
+    }
+
+    Component.onCompleted: {
+        loader = StaticLoader.getLoader()
     }
 }
 

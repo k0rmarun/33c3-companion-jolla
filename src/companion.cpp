@@ -37,6 +37,7 @@
 #include "loader.h"
 #include "event.h"
 #include "conferenceeventsortingorder.h"
+#include "staticloader.h"
 #include <unistd.h>
 #include <grp.h>
 #include <pwd.h>
@@ -65,6 +66,9 @@ int main(int argc, char *argv[])
     //
     // For details see:
     // https://harbour.jolla.com/faq#1.5.0
+    qmlRegisterSingletonType<StaticLoader>("harbour.companion", 1, 0, "StaticLoader", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject* {
+        return new StaticLoader();
+    });
     qmlRegisterType<Loader>("harbour.companion", 1, 0, "Loader");
     qmlRegisterType<Conference>("harbour.companion", 1, 0, "Conference");
     qmlRegisterType<ConferenceDay>("harbour.companion", 1, 0, "ConferenceDay");

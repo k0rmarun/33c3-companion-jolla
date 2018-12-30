@@ -36,7 +36,7 @@ import "js/Global.js" as Global
 
 ApplicationWindow
 {
-    initialPage: Component { ConferenceView { } }
+    initialPage: Qt.resolvedUrl("pages/ConferenceView.qml")
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 

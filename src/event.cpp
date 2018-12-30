@@ -31,6 +31,13 @@ QList<QObject*> generateEventList()
     );
     eventList.append(
         new Event(
+            "(Merged) Chaos Communication Congress",
+            2018-35,
+            "https://streaming.media.ccc.de/configs/conferences/%0c3/everything.schedule.json"
+        )
+    );
+    eventList.append(
+        new Event(
             "Gulasch Programmier Nacht",
             2018-18,
             "https://entropia.de/GPN%0:Fahrplan:JSON?action=raw"

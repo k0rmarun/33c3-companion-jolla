@@ -13,13 +13,12 @@ class ConferenceDay : public QObject
     Q_PROPERTY(QList<QObject*> events MEMBER events NOTIFY eventsChanged)
     Q_PROPERTY(QStringList rooms MEMBER rooms NOTIFY roomsChanged)
     Q_PROPERTY(ConferenceEventSortingOrder::SortingOrder sortingOrder READ getSortingOrder WRITE setSortingOrder NOTIFY sortingOrderChanged)
-
+public:
     ConferenceEventSortingOrder::SortingOrder sortingOrder;
-
     QDate date;
     QList<QObject*> events;
     QStringList rooms;
-public:
+
     explicit ConferenceDay(QObject *parent = nullptr);
     void setDate(const QDate& date);
     void addEvent(ConferenceEvent* event);

@@ -30,12 +30,39 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import harbour.companion 1.0
+
+import "../js/Global.js" as Global
 
 CoverBackground {
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: qsTr("Nothing to\nsee yet")
+    id: page
+    property var loader
+
+    SilicaListView {
+        model: loader.conference.getNextEvents();
+        anchors.fill: parent
+        delegate: ListItem {
+            width: parent.width
+            Label {
+                id: itemTime
+                text: Global.formatTime(modelData.start)
+                font.pixelSize: Theme.fontSizeExtraSmall
+                width: 80
+            }
+            Label {
+                anchors.left: itemTime.right
+                text: modelData.title
+                font.pixelSize: Theme.fontSizeExtraSmall
+                lineHeight: 0.8
+                wrapMode: "WordWrap"
+                maximumLineCount: 3
+                width: parent.width - 80
+            }
+        }
+    }
+
+    Component.onCompleted: {
+        loader = StaticLoader.getLoader()
     }
 }
 

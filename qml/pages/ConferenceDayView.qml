@@ -103,6 +103,10 @@ Page {
                 text: modelData.room
                 anchors.top: title.bottom
                 anchors.right: title.right
+                anchors.left: times.right
+                truncationMode: TruncationMode.Elide
+                horizontalAlignment: "AlignRight"
+                maximumLineCount: 1
                 color: Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeSmall
             }

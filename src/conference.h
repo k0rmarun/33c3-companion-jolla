@@ -24,6 +24,8 @@ public:
 
     static Conference* fromJson(const QJsonObject& json);
 
+    Q_INVOKABLE QList<QObject *> getNextEvents();
+
 signals:
     void titleChanged(const QString& title);
     void startChanged(const QDate& date);
