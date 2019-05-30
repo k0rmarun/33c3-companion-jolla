@@ -1,8 +1,8 @@
-# 34c3-companion-jolla
+# harbour-chaoscompanion
 
 Your schedule companion app for the chaos events:
-- congress (34c3)
-- gpn
-- mrmcd
+- Chaos Communication Congress (congress / c3)
+- Gulasch Programmier Nacht (GPN)
+- Meta Rhein Main Chaos Days (MRMCD)
 
-Any FRAB ("Fahrplan") compatible event can be added.
+Any [FRAB](http://frab.github.io/frab/) ("Fahrplan") compatible event can be added.
