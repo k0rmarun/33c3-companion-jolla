@@ -13,7 +13,7 @@ Name:       harbour-companion
 %{!?qtc_make:%define qtc_make make}
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 Summary:    Chaos Companion
-Version:    0.6
+Version:    0.7
 Release:    1
 Group:      Qt/Qt
 License:    LICENSE

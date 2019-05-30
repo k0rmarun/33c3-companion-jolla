@@ -55,7 +55,7 @@ Page {
             MenuItem {
                 text: qsTr("Select conference")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:Loader});
+                    pageStack.push(Qt.resolvedUrl("SelectConferenceView.qml"), {loader:loader});
                 }
 
             }

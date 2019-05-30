@@ -1,3 +1,5 @@
+* Thu May 30 2019 Niels Bernlöhr <kormarun@gmail.com> 0.7.0-1
+- Fixed issue breaking event switch
 * Tue Dec 25 2018 Niels Bernlöhr <kormarun@gmail.com> 0.4.0-1
 - Update for 35c3
 - Data now parsed in c++ for performance and memory usage
