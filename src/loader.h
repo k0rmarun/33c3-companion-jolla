@@ -36,7 +36,6 @@ public:
     bool loading(){return mLoading; }
 
     Q_INVOKABLE void loadFromNetwork();
-    Q_INVOKABLE void setCurrent(const QString& cacheTitle, const QString &url, int iteration);
     Q_INVOKABLE void setCurrent(const QString& cacheTitle, const QString &url);
 
 private slots:

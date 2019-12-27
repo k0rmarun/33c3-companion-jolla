@@ -14,7 +14,9 @@ Loader::Loader(QObject *parent) : QObject(parent)
     nam = new QNetworkAccessManager(this);
     mLoading = false;
     emit loadingChanged(mLoading);
-    setCurrent("cache.json", "", 0);
+    if(!loadFromDisk()){
+        loadFromNetwork();
+    }
 }
 
 bool Loader::loadFromDisk(){
@@ -37,28 +39,16 @@ void Loader::loadFromNetwork(){
     nam->get(QNetworkRequest(mURL));
 }
 
-void Loader::setCurrent(const QString& cacheTitle, const QString &url, int iteration) {
-    mCacheFilename = mBaseDir + "/" + cacheTitle.arg(iteration);
-    if(url.isEmpty()){
-        mURL = read(mURLFilename);
-    }else {
-        mURL = url.arg(iteration);
-    }
-    if(!loadFromDisk()){
-        loadFromNetwork();
-        return;
-    }
-}
 void Loader::setCurrent(const QString& cacheTitle, const QString &url) {
-    mCacheFilename = mBaseDir + "/" + cacheTitle;
-    if(url.isEmpty()){
-        mURL = read(mURLFilename);
-    }else {
+    qDebug() << "aaaaa";
+    bool changed = mURL == url;
+    if(!url.isEmpty()){
         mURL = url;
     }
-    if(!loadFromDisk()){
+    qDebug() << "bbbbb" << changed << mURL << url;
+    if(changed || !loadFromDisk()){
+        qDebug() << "ccccc";
         loadFromNetwork();
-        return;
     }
 }
 
@@ -67,7 +57,7 @@ void Loader::RequestFinished(QNetworkReply *reply){
         QByteArray conferenceData = reply->readAll();
         if(conferenceData.isEmpty()){
             emit loadFromNetworkFailed();
-            qDebug() << "LOAD FROM NETWORK FAILED";
+            qDebug() << "LOAD FROM NETWORK FAILED" << reply->url();
             return;
         }
 
